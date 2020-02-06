@@ -34,7 +34,7 @@ services:
     image: openplc
     stdin_open: true
     tty: true
-    command: bash
+    # command: bash
     ports:
       - "8080:8080"
 
@@ -48,7 +48,9 @@ services:
     image: scadabr
     stdin_open: true
     tty: true
-    command: bash
+    # command: bash
+    ports:
+      - "9090:9090"
 
   clients:
     build:
