@@ -4,6 +4,9 @@ services:
     build:
       context: .
       dockerfile: mosquitto/Dockerfile
+      args:
+        http_proxy: "${http_proxy}"
+        https_proxy: "${https_proxy}"
     image: mosquitto
     stdin_open: true
     tty: true
@@ -13,6 +16,9 @@ services:
     build:
       context: .
       dockerfile: modbus-mqtt-bridge/Dockerfile
+      args:
+        http_proxy: "${http_proxy}"
+        https_proxy: "${https_proxy}"
     image: openvino-runtime
     stdin_open: true
     tty: true
@@ -22,15 +28,23 @@ services:
     build:
       context: .
       dockerfile: openplc/Dockerfile
+      args:
+        http_proxy: "${http_proxy}"
+        https_proxy: "${https_proxy}"
     image: openplc
     stdin_open: true
     tty: true
     command: bash
+    ports:
+      - "8080:8080"
 
   scadabr:
     build:
       context: .
       dockerfile: scadabr/Dockerfile
+      args:
+        http_proxy: "${http_proxy}"
+        https_proxy: "${https_proxy}"
     image: scadabr
     stdin_open: true
     tty: true
@@ -40,6 +54,9 @@ services:
     build:
       context: .
       dockerfile: clients/Dockerfile
+      args:
+        http_proxy: "${http_proxy}"
+        https_proxy: "${https_proxy}"
     image: clients
     stdin_open: true
     tty: true
