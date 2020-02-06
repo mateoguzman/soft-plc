@@ -1,0 +1,46 @@
+version: '3.4'
+services:
+  mosquitto:
+    build:
+      context: .
+      dockerfile: mosquitto/Dockerfile
+    image: mosquitto
+    stdin_open: true
+    tty: true
+    command: bash
+
+  modbus-mqtt-bridge:
+    build:
+      context: .
+      dockerfile: modbus-mqtt-bridge/Dockerfile
+    image: openvino-runtime
+    stdin_open: true
+    tty: true
+    command: bash
+
+  openplc:
+    build:
+      context: .
+      dockerfile: openplc/Dockerfile
+    image: openplc
+    stdin_open: true
+    tty: true
+    command: bash
+
+  scadabr:
+    build:
+      context: .
+      dockerfile: scadabr/Dockerfile
+    image: scadabr
+    stdin_open: true
+    tty: true
+    command: bash
+
+  clients:
+    build:
+      context: .
+      dockerfile: clients/Dockerfile
+    image: clients
+    stdin_open: true
+    tty: true
+    command: bash
