@@ -4,7 +4,6 @@ services:
     image: eclipse-mosquitto
     stdin_open: true
     tty: true
-    command: bash
     volumes:
       - ./mosquitto/config:/mosquitto/config
       - mosquitto-data:/mosquitto/data
@@ -13,9 +12,7 @@ services:
     ports:
       - "1883:1883"
       - "9001:9001"
-      - "8000:8000"
-      - "8080:8080"
-
+ 
   modbus-mqtt-bridge:
     build:
       context: .
