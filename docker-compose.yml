@@ -11,10 +11,10 @@ services:
       - mosquitto-log:/mosquitto/logs
 
     ports:
-      -"1883:1883"
-      -"9001:9001"
-      -"8000:8000"
-      -"8080:8080"
+      - "1883:1883"
+      - "9001:9001"
+      - "8000:8000"
+      - "8080:8080"
 
   modbus-mqtt-bridge:
     build:
@@ -68,4 +68,4 @@ services:
 
 volumes:
   mosquitto-data:
-  mosquitto-logs:
+  mosquitto-log:
