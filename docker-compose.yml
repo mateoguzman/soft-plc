@@ -1,17 +1,17 @@
 version: '3.4'
 services:
   mosquitto:
-    build:
-      context: .
-      dockerfile: mosquitto/Dockerfile
-      args:
-        http_proxy: "${http_proxy}"
-        https_proxy: "${https_proxy}"
-    image: mosquitto
+    image: eclipse-mosquitto
     stdin_open: true
     tty: true
-    command: bash
-
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-log:/mosquitto/logs
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+ 
   modbus-mqtt-bridge:
     build:
       context: .
@@ -63,3 +63,7 @@ services:
     stdin_open: true
     tty: true
     command: bash
+
+volumes:
+  mosquitto-data:
+  mosquitto-log:
