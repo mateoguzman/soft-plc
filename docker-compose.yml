@@ -51,7 +51,7 @@ services:
     tty: true
     # command: bash
     ports:
-      - "9091:9090"
+      - "9090:9090"
 
   node-red:
     build:
