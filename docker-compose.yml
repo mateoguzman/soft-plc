@@ -37,6 +37,7 @@ services:
     # command: bash
     ports:
       - "8080:8080"
+    privileged: true
 
   scadabr:
     build:
@@ -50,7 +51,7 @@ services:
     tty: true
     # command: bash
     ports:
-      - "9090:9090"
+      - "9091:9090"
 
   clients:
     build:

@@ -13,5 +13,7 @@ before_install:
 script:
   # Build all images
   - docker-compose build
+  # Build OpenPLC Editor image
+  - cd openplc-editor && docker-compose build
   # List images
   - docker images

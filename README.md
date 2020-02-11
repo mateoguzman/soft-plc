@@ -5,6 +5,15 @@
 WebUI runs on `http://localhost:8080`
 Admin account: `openplc:openplc`
 
+## OpenPLC Editor
+
+```sh
+cd openplc-editor
+xhost +
+docker-compose up
+xhost -
+```
+
 ## ScadaBR
 
 WebUI runs on `http://localhost:9090/ScadaBR`
