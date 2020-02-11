@@ -53,6 +53,22 @@ services:
     ports:
       - "9091:9090"
 
+  node-red:
+    build:
+      context: .
+      dockerfile: node-red/Dockerfile
+      args:
+        http_proxy: "${http_proxy:-}"
+        https_proxy: "${https_proxy:-}"
+    image: node-red
+    stdin_open: true
+    tty: true
+    # command: bash
+    ports:
+      - "1880:1880"
+    depends_on:
+      - mosquitto
+
   clients:
     build:
       context: .

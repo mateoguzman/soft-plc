@@ -18,3 +18,8 @@ xhost -
 
 WebUI runs on `http://localhost:9090/ScadaBR`
 Admin account: `admin:admin`
+
+## Node Red
+
+WebUI runs on `http://localhost:1883/ScadaBR`
+Mqtt Server is `mosquitto:1883`
