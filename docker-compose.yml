@@ -55,8 +55,8 @@ services:
 
   node-red:
     build:
-      context: .
-      dockerfile: node-red/Dockerfile
+      context: node-red
+      dockerfile: Dockerfile
       args:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
