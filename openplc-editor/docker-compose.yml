@@ -15,6 +15,6 @@ services:
       - DISPLAY
     volumes:
       - "${HOME}/.Xauthority:/root/.Xauthority:rw"
-      - ./project:/root/project
+      - ./projects:/root/projects
     network_mode: "host"
     privileged: true

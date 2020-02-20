@@ -12,7 +12,7 @@ END_PROGRAM
 CONFIGURATION Config0
 
   RESOURCE Res0 ON PLC
-    TASK task0(INTERVAL := T#20ms,PRIORITY := 0);
-    PROGRAM instance0 WITH task0 : My_First_Program;
+    TASK My_Task(INTERVAL := T#50ms,PRIORITY := 0);
+    PROGRAM My_Instance WITH My_Task : My_First_Program;
   END_RESOURCE
 END_CONFIGURATION
