@@ -68,6 +68,33 @@ services:
       - "1880:1880"
     depends_on:
       - mosquitto
+    environment:
+      - DEBUG=contribModbus*
+
+  opcua-server:
+    build:
+      context: opcua-server
+      dockerfile: Dockerfile
+      args:
+        http_proxy: "${http_proxy:-}"
+        https_proxy: "${https_proxy:-}"
+    image: opcua-server
+    stdin_open: true
+    tty: true
+
+  opcua-client:
+    build:
+      context: opcua-client
+      dockerfile: Dockerfile
+      args:
+        http_proxy: "${http_proxy:-}"
+        https_proxy: "${https_proxy:-}"
+    image: opcua-client
+    stdin_open: true
+    tty: true
+    environment:
+      - OPCUA_SERVER_ADDR=opcua-server
+      - OPCUA_SERVER_PORT=4840
 
   clients:
     build:
