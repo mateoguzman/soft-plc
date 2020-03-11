@@ -11,26 +11,18 @@ RUN git clone https://github.com/open62541/open62541.git && \
 
 WORKDIR /opt/open62541/build
 
-RUN cmake -DBUILD_SHARED_LIBS=ON \
+RUN cmake -DBUILD_SHARED_LIBS=OFF \
         -DCMAKE_BUILD_TYPE=Debug \
         -DUA_BUILD_EXAMPLES=ON \
+        -DUA_ENABLE_PUBSUB=ON \
+        -DUA_ENABLE_PUBSUB_MQTT=ON \
         -DUA_ENABLE_HARDENING=OFF \
         -DUA_ENABLE_ENCRYPTION=ON \
         -DUA_ENABLE_SUBSCRIPTIONS=ON \
         -DUA_ENABLE_SUBSCRIPTIONS_EVENTS=ON \
         -DUA_NAMESPACE_ZERO=FULL \
-        /opt/open62541 && \
-    make -j 8 && \
+         /opt/open62541 && \
+    make -j $(nproc) && \
     make install
 
-WORKDIR /root
-
-COPY ./server.c /root/server.c
-
-RUN gcc -std=c99 -DUA_ARCHITECTURE_POSIX server.c -o server -lopen62541
-
-EXPOSE 4840
-
-ENV LD_LIBRARY_PATH=/usr/local/lib64
-
-CMD ["/root/server"]
+CMD ["/opt/open62541/build/bin/examples/tutorial_pubsub_mqtt_publish", "--url", "opc.mqtt://mosquitto:1883"]

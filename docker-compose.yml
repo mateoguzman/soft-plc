@@ -96,6 +96,19 @@ services:
       - OPCUA_SERVER_ADDR=opcua-server
       - OPCUA_SERVER_PORT=4840
 
+  opcua-pubsub:
+    build:
+      context: opcua-pubsub
+      dockerfile: Dockerfile
+      args:
+        http_proxy: "${http_proxy:-}"
+        https_proxy: "${https_proxy:-}"
+    image: opcua-pubsub
+    stdin_open: true
+    tty: true
+    depends_on:
+      - mosquitto
+
   clients:
     build:
       context: .
