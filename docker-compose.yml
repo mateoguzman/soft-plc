@@ -12,18 +12,6 @@ services:
       - "1883:1883"
       - "9001:9001"
  
-  modbus-mqtt-bridge:
-    build:
-      context: .
-      dockerfile: modbus-mqtt-bridge/Dockerfile
-      args:
-        http_proxy: "${http_proxy:-}"
-        https_proxy: "${https_proxy:-}"
-    image: modbus-mqtt-bridge
-    stdin_open: true
-    tty: true
-    command: bash
-
   openplc:
     build:
       context: .
@@ -108,18 +96,6 @@ services:
     tty: true
     depends_on:
       - mosquitto
-
-  clients:
-    build:
-      context: .
-      dockerfile: clients/Dockerfile
-      args:
-        http_proxy: "${http_proxy:-}"
-        https_proxy: "${https_proxy:-}"
-    image: clients
-    stdin_open: true
-    tty: true
-    command: bash
 
 volumes:
   mosquitto-data:
