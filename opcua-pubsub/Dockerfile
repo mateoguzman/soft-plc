@@ -16,6 +16,7 @@ RUN cmake -DBUILD_SHARED_LIBS=OFF \
         -DUA_BUILD_EXAMPLES=ON \
         -DUA_ENABLE_PUBSUB=ON \
         -DUA_ENABLE_PUBSUB_MQTT=ON \
+        -DUA_ENABLE_JSON_ENCODING=ON \
         -DUA_ENABLE_HARDENING=OFF \
         -DUA_ENABLE_ENCRYPTION=ON \
         -DUA_ENABLE_SUBSCRIPTIONS=ON \
@@ -25,4 +26,4 @@ RUN cmake -DBUILD_SHARED_LIBS=OFF \
     make -j $(nproc) && \
     make install
 
-CMD ["/opt/open62541/build/bin/examples/tutorial_pubsub_mqtt_publish", "--url", "opc.mqtt://mosquitto:1883"]
+CMD ["/opt/open62541/build/bin/examples/tutorial_pubsub_mqtt_publish", "--url", "opc.mqtt://mosquitto:1883", "--json"]
