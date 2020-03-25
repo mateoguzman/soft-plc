@@ -15,5 +15,7 @@ script:
   - docker-compose build
   # Build OpenPLC Editor image
   - cd openplc-editor && docker-compose build
+  # Build OPC UA images
+  - cd opcua && docker-compose build
   # List images
   - docker images

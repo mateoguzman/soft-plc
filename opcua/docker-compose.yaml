@@ -1,0 +1,73 @@
+version: '3.4'
+services:
+
+  # opcua-server runs the tutorial_server_events example from
+  # https://github.com/open62541/open62541/blob/master/examples/tutorial_server_events.c
+  opcua-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        http_proxy: "${http_proxy:-}"
+        https_proxy: "${https_proxy:-}"
+    image: opcua-server
+    command: "./bin/examples/tutorial_server_events"
+
+  # opcua-client runs the tutorial_client_events example from
+  # https://github.com/open62541/open62541/blob/master/examples/tutorial_client_events.c
+  opcua-client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        http_proxy: "${http_proxy:-}"
+        https_proxy: "${https_proxy:-}"
+    image: opcua-client
+    depends_on:
+      - opcua-server
+    command: "./bin/examples/tutorial_client_events opc.tcp://opcua-server:4840"
+
+  # opcua-publisher runs the tutorial_pubsub_publish example from
+  # https://github.com/open62541/open62541/blob/master/examples/pubsub/tutorial_pubsub_publish.c
+  opcua-publisher:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        http_proxy: "${http_proxy:-}"
+        https_proxy: "${https_proxy:-}"
+    image: opcua-publisher
+    command: "./bin/examples/tutorial_pubsub_publish opc.udp://224.0.0.22:4840"
+    network_mode: host
+
+  # opcua-subscriber runs the tutorial_pubsub_subscribe example from
+  # https://github.com/open62541/open62541/blob/master/examples/pubsub/tutorial_pubsub_subscribe.c
+  opcua-subscriber:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        http_proxy: "${http_proxy:-}"
+        https_proxy: "${https_proxy:-}"
+    image: opcua-subscriber
+    command: "./bin/examples/tutorial_pubsub_subscribe opc.udp://224.0.0.22:4840"
+    network_mode: host
+
+  # mosquitto runs the eclipse-mosquitto broker from
+  # https://mosquitto.org/
+  mosquitto:
+    image: eclipse-mosquitto
+
+  # opcua-mqtt-publisher runs the tutorial_pubsub_mqtt_publish example from
+  # https://github.com/open62541/open62541/blob/master/examples/pubsub/tutorial_pubsub_mqtt_publish.c
+  opcua-mqtt-publisher:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        http_proxy: "${http_proxy:-}"
+        https_proxy: "${https_proxy:-}"
+    image: opcua-mqtt-publisher
+    command: "./bin/examples/tutorial_pubsub_mqtt_publish --url opc.mqtt://mosquitto:1883 --json"
+    depends_on:
+      - mosquitto
