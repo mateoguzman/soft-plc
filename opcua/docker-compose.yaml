@@ -68,6 +68,20 @@ services:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
     image: opcua-mqtt-publisher
-    command: "./bin/examples/tutorial_pubsub_mqtt_publish --url opc.mqtt://mosquitto:1883 --json"
+    command: "./bin/examples/tutorial_pubsub_mqtt_publish --url opc.mqtt://mosquitto:1883"
+    depends_on:
+      - mosquitto
+
+  # opcua-mqtt-subscriber runs the tutorial_pubsub_mqtt_subscriber example from
+  # https://github.com/opcua-tsn-team-kalycito/open62541/blob/Standalone_mqtt_subscriber/examples/pubsub/tutorial_pubsub_mqtt_subscribe.c
+  opcua-mqtt-subscriber:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        http_proxy: "${http_proxy:-}"
+        https_proxy: "${https_proxy:-}"
+    image: opcua-mqtt-subscriber
+    command: "./bin/examples/tutorial_pubsub_mqtt_subscribe --url opc.mqtt://mosquitto:1883"
     depends_on:
       - mosquitto

@@ -7,6 +7,12 @@ WORKDIR /opt
 RUN git clone https://github.com/open62541/open62541.git && \
     cd open62541 && \
     git fetch -f --tags && \
+    git remote add kalcito https://github.com/opcua-tsn-team-kalycito/open62541.git && \
+    git fetch kalcito && \
+    git checkout Standalone_mqtt_subscriber && \
+    git config user.name "Your Name" && \
+    git config user.email "you@example.com" && \
+    git merge master && \
     git submodule update --init --recursive
 
 WORKDIR /opt/open62541/build
@@ -22,8 +28,8 @@ RUN cmake -DBUILD_SHARED_LIBS=OFF \
         -DUA_ENABLE_SUBSCRIPTIONS=ON \
         -DUA_ENABLE_SUBSCRIPTIONS_EVENTS=ON \
         -DUA_NAMESPACE_ZERO=FULL \
-         /opt/open62541 && \
+        /opt/open62541 && \
     make -j $(nproc) && \
     make install
 
-CMD bash
+CMD sh
