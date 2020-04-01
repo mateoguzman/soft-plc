@@ -32,4 +32,8 @@ RUN cmake -DBUILD_SHARED_LIBS=OFF \
     make -j $(nproc) && \
     make install
 
+COPY ./examples /root/examples
+
+RUN cd /root/examples && make all
+
 CMD sh

@@ -85,3 +85,33 @@ services:
     command: "./bin/examples/tutorial_pubsub_mqtt_subscribe --url opc.mqtt://mosquitto:1883"
     depends_on:
       - mosquitto
+
+  # opcua-sensor is a customized opcua-mqtt-publisher
+  opcua-sensor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        http_proxy: "${http_proxy:-}"
+        https_proxy: "${https_proxy:-}"
+    image: opcua-sensor
+    command: "/root/examples/tutorial_pubsub_mqtt_publish --url opc.mqtt://mosquitto:1883"
+    depends_on:
+      - mosquitto
+    volumes:
+      - ./examples:/root/examples
+
+  # opcua-actuator is a customized opcua-mqtt-subscriber
+  opcua-actuator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        http_proxy: "${http_proxy:-}"
+        https_proxy: "${https_proxy:-}"
+    image: opcua-actuator
+    command: "/root/examples/tutorial_pubsub_mqtt_subscribe --url opc.mqtt://mosquitto:1883"
+    depends_on:
+      - mosquitto
+    volumes:
+      - ./examples:/root/examples

@@ -96,7 +96,7 @@ addReaderGroup(UA_Server *server) {
 
 /* Add DataSetReader to the ReaderGroup */
 static void
-addDataSetReader(UA_Server *server) {
+addDataSetReader(UA_Server *server, char *topic) {
 
     if(server == NULL) {
         return;
@@ -119,7 +119,7 @@ addDataSetReader(UA_Server *server) {
         fillTestDataSetMetaData(&readerConfig.dataSetMetaData);
 
         /* Setting up Subscription settings in DataSetReader */
-        addMqttSubscription(server, connection, SUBSCRIBER_TOPIC, NULL, NULL, METADATAQUEUENAME, UA_BROKERTRANSPORTQUALITYOFSERVICE_BESTEFFORT);
+        addMqttSubscription(server, connection, topic, NULL, NULL, METADATAQUEUENAME, UA_BROKERTRANSPORTQUALITYOFSERVICE_BESTEFFORT);
         UA_Server_addDataSetReader(server, readerGroupIdentifier, &readerConfig,
                                           &readerIdentifier);
     }
@@ -222,6 +222,7 @@ static void stopHandler(int sign) {
 
 static void usage(void) {
     printf("Usage: tutorial_pubsub_mqtt [--url <opc.mqtt://hostname:port>] "
+           "[--topic <mqttTopic>] "
            "[--freq <frequency in ms> "
            "[--json]\n"
            "  Defaults are:\n"
@@ -237,6 +238,7 @@ int main(int argc, char **argv) {
 
     /* ToDo: Change to secure mqtt port:8883 */
     char *addressUrl = BROKER_ADDRESS_URL;
+    char *topic = SUBSCRIBER_TOPIC;
 
     /* Parse arguments */
     for(int argpos = 1; argpos < argc; argpos++) {
@@ -257,6 +259,16 @@ int main(int argc, char **argv) {
             }
             argpos++;
             addressUrl = argv[argpos];
+            continue;
+        }
+
+        if(strcmp(argv[argpos], "--topic") == 0) {
+            if(argpos + 1 == argc) {
+                usage();
+                return -1;
+            }
+            argpos++;
+            topic = argv[argpos];
             continue;
         }
 
@@ -295,7 +307,7 @@ int main(int argc, char **argv) {
     }
 
     addReaderGroup(server);
-    addDataSetReader(server);
+    addDataSetReader(server, topic);
     addSubscribedVariables(server, readerIdentifier);
     UA_Server_run(server, &running);
     UA_Server_delete(server);
