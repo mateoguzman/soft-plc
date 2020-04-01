@@ -223,12 +223,10 @@ static void stopHandler(int sign) {
 static void usage(void) {
     printf("Usage: tutorial_pubsub_mqtt [--url <opc.mqtt://hostname:port>] "
            "[--topic <mqttTopic>] "
-           "[--freq <frequency in ms> "
            "[--json]\n"
            "  Defaults are:\n"
            "  - Url: opc.mqtt://127.0.0.1:1883\n"
            "  - Topic: customTopic\n"
-           "  - Frequency: 500\n"
            "  - JSON: Off\n");
 }
 
@@ -269,14 +267,6 @@ int main(int argc, char **argv) {
             }
             argpos++;
             topic = argv[argpos];
-            continue;
-        }
-
-        if(strcmp(argv[argpos], "--freq") == 0) {
-            if(argpos + 1 == argc) {
-                usage();
-                return -1;
-            }
             continue;
         }
 
