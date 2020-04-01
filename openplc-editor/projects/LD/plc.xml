@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<project xmlns:ns1="http://www.plcopen.org/xml/tc6.xsd" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.plcopen.org/xml/tc6_0201">
+<project xmlns:ns1="http://www.plcopen.org/xml/tc6_0201" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.plcopen.org/xml/tc6_0201">
   <fileHeader companyName="Unknown" productName="Unnamed" productVersion="1" creationDateTime="2020-02-20T16:42:49"/>
-  <contentHeader name="My_First_Project" modificationDateTime="2020-02-20T17:00:50">
+  <contentHeader name="My_First_Project" modificationDateTime="2020-03-30T20:15:12">
     <coordinateInfo>
       <fbd>
         <scaling x="10" y="10"/>
@@ -20,17 +20,17 @@
       <pou name="My_First_Program" pouType="program">
         <interface>
           <localVars>
-            <variable name="PB1" address="%IX0.0">
+            <variable name="PB1" address="%QX0.0">
               <type>
                 <BOOL/>
               </type>
             </variable>
-            <variable name="PB2" address="%IX0.1">
+            <variable name="PB2" address="%QX1.0">
               <type>
                 <BOOL/>
               </type>
             </variable>
-            <variable name="LAMP" address="%QX0.0">
+            <variable name="LAMP" address="%QX2.0">
               <type>
                 <BOOL/>
               </type>
@@ -129,7 +129,7 @@
     <configurations>
       <configuration name="Config0">
         <resource name="Res0">
-          <task name="My_Task" priority="0" interval="T#50ms">
+          <task name="My_Task" priority="0" interval="T#1s">
             <pouInstance name="My_Instance" typeName="My_First_Program"/>
           </task>
         </resource>

@@ -2,8 +2,6 @@ version: '3.4'
 services:
   mosquitto:
     image: eclipse-mosquitto
-    stdin_open: true
-    tty: true
     volumes:
       - ./mosquitto/config:/mosquitto/config
       - mosquitto-data:/mosquitto/data
@@ -20,9 +18,6 @@ services:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
     image: openplc
-    stdin_open: true
-    tty: true
-    # command: bash
     ports:
       - "8080:8080"
     privileged: true
@@ -35,9 +30,6 @@ services:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
     image: scadabr
-    stdin_open: true
-    tty: true
-    # command: bash
     ports:
       - "9090:9090"
 
@@ -49,9 +41,6 @@ services:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
     image: node-red
-    stdin_open: true
-    tty: true
-    # command: bash
     ports:
       - "1880:1880"
     depends_on:

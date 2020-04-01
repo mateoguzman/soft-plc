@@ -1,8 +1,8 @@
 PROGRAM My_First_Program
   VAR
-    PB1 AT %IX0.0 : BOOL;
-    PB2 AT %IX0.1 : BOOL;
-    LAMP AT %QX0.0 : BOOL;
+    PB1 AT %QX0.0 : BOOL;
+    PB2 AT %QX1.0 : BOOL;
+    LAMP AT %QX2.0 : BOOL;
   END_VAR
 
   LAMP := NOT(PB2) AND (LAMP OR PB1);
@@ -12,7 +12,7 @@ END_PROGRAM
 CONFIGURATION Config0
 
   RESOURCE Res0 ON PLC
-    TASK My_Task(INTERVAL := T#50ms,PRIORITY := 0);
+    TASK My_Task(INTERVAL := T#1s,PRIORITY := 0);
     PROGRAM My_Instance WITH My_Task : My_First_Program;
   END_RESOURCE
 END_CONFIGURATION
