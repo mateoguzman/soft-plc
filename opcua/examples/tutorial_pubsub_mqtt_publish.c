@@ -69,7 +69,7 @@ addVariable(UA_Server *server) {
 }
 
 static void
-addPubSubConnection(UA_Server *server, char *addressUrl, char* id) {
+addPubSubConnection(UA_Server *server, char *addressUrl, char *id) {
     /* Details about the connection configuration and handling are located
      * in the pubsub connection tutorial */
     UA_PubSubConnectionConfig connectionConfig;

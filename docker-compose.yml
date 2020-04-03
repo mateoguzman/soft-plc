@@ -72,6 +72,30 @@ services:
     depends_on:
       - mosquitto
 
+  inlet-valve:
+    build:
+      context: opcua
+      dockerfile: Dockerfile
+      args:
+        http_proxy: "${http_proxy:-}"
+        https_proxy: "${https_proxy:-}"
+    image: inlet-valve
+    command: "/root/examples/tutorial_pubsub_mqtt_subscribe --url opc.mqtt://mosquitto:1883 --topic inlet-valve --id inlet-valve"
+    depends_on:
+      - mosquitto
+
+  outlet-valve:
+    build:
+      context: opcua
+      dockerfile: Dockerfile
+      args:
+        http_proxy: "${http_proxy:-}"
+        https_proxy: "${https_proxy:-}"
+    image: inlet-valve
+    command: "/root/examples/tutorial_pubsub_mqtt_subscribe --url opc.mqtt://mosquitto:1883 --topic outlet-valve --id outlet-valve"
+    depends_on:
+      - mosquitto
+
 volumes:
   mosquitto-data:
   mosquitto-log:

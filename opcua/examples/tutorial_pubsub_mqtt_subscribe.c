@@ -48,12 +48,35 @@ UA_NodeId readerIdentifier;
 UA_DataSetReaderConfig readerConfig;
 UA_PubSubConnection *connection;
 
+static UA_NodeId actuatorStatusId;
+
 static void fillTestDataSetMetaData(UA_DataSetMetaDataType *pMetaData);
 static void initMetadata(int metaDataCounter, UA_DataSetMetaDataType* pMetaData,
                          int metaDataType, char* metaDataName, UA_Byte metaDataNameSpaceId );
 
 static void
-addPubSubConnection(UA_Server *server, char *addressUrl) {
+addVariable(UA_Server *server) {
+    /* Define the attribute of the actuatorStatus variable node */
+    UA_VariableAttributes attr = UA_VariableAttributes_default;
+    UA_Boolean actuatorStatus = 0;
+    UA_Variant_setScalar(&attr.value, &actuatorStatus, &UA_TYPES[UA_TYPES_BOOLEAN]);
+    attr.description = UA_LOCALIZEDTEXT("en-US","Actuator Status");
+    attr.displayName = UA_LOCALIZEDTEXT("en-US","Actuator Status");
+    attr.dataType = UA_TYPES[UA_TYPES_BOOLEAN].typeId;
+    attr.accessLevel = UA_ACCESSLEVELMASK_READ | UA_ACCESSLEVELMASK_WRITE;
+
+    /* Add the variable node to the information model */
+    actuatorStatusId = UA_NODEID_STRING(1, "actuator.status");
+    UA_QualifiedName actuatorStatusName = UA_QUALIFIEDNAME(1, "Actuator Status");
+    UA_NodeId parentNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER);
+    UA_NodeId parentReferenceNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_ORGANIZES);
+    UA_Server_addVariableNode(server, actuatorStatusId, parentNodeId,
+                              parentReferenceNodeId, actuatorStatusName,
+                              UA_NODEID_NUMERIC(0, UA_NS0ID_BASEDATAVARIABLETYPE), attr, NULL, NULL);
+}
+
+static void
+addPubSubConnection(UA_Server *server, char *addressUrl, char *id) {
     /* Details about the connection configuration and handling are located
      * in the pubsub connection tutorial */
     UA_PubSubConnectionConfig connectionConfig;
@@ -70,7 +93,7 @@ addPubSubConnection(UA_Server *server, char *addressUrl) {
     /* configure options, set mqtt client id */
     UA_KeyValuePair connectionOptions[1];
     connectionOptions[0].key = UA_QUALIFIEDNAME(0, CONNECTIONOPTION_NAME);
-    UA_String mqttClientId = UA_STRING(MQTT_CLIENT_ID);
+    UA_String mqttClientId = UA_STRING(id);
     UA_Variant_setScalar(&connectionOptions[0].value, &mqttClientId, &UA_TYPES[UA_TYPES_STRING]);
     connectionConfig.connectionProperties = connectionOptions;
     connectionConfig.connectionPropertiesSize = 1;
@@ -223,10 +246,12 @@ static void stopHandler(int sign) {
 static void usage(void) {
     printf("Usage: tutorial_pubsub_mqtt [--url <opc.mqtt://hostname:port>] "
            "[--topic <mqttTopic>] "
+           "[--id <mqtt client id>] "
            "[--json]\n"
            "  Defaults are:\n"
            "  - Url: opc.mqtt://127.0.0.1:1883\n"
            "  - Topic: customTopic\n"
+           "  - MQTT Client Id: TESTCLIENTSUBSCRIBERMQTT\n"
            "  - JSON: Off\n");
 }
 
@@ -237,6 +262,7 @@ int main(int argc, char **argv) {
     /* ToDo: Change to secure mqtt port:8883 */
     char *addressUrl = BROKER_ADDRESS_URL;
     char *topic = SUBSCRIBER_TOPIC;
+    char *id = MQTT_CLIENT_ID;
 
     /* Parse arguments */
     for(int argpos = 1; argpos < argc; argpos++) {
@@ -270,6 +296,16 @@ int main(int argc, char **argv) {
             continue;
         }
 
+        if(strcmp(argv[argpos], "--id") == 0) {
+            if(argpos + 1 == argc) {
+                usage();
+                return -1;
+            }
+            argpos++;
+            id = argv[argpos];
+            continue;
+        }
+
         usage();
         return -1;
     }
@@ -286,7 +322,8 @@ int main(int argc, char **argv) {
     config->pubsubTransportLayers[0] = UA_PubSubTransportLayerMQTT();
     config->pubsubTransportLayersSize++;
 
-    addPubSubConnection(server, addressUrl);
+    addVariable(server);
+    addPubSubConnection(server, addressUrl, id);
     connection = UA_PubSubConnection_findConnectionbyId(server, connectionIdent);
 
     if(!connection) {

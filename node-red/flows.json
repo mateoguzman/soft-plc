@@ -1,0 +1,1219 @@
+[
+    {
+        "id": "c0309404.4863b8",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "ef427f5a.b1a85",
+        "type": "OpcUa-Browser",
+        "z": "c0309404.4863b8",
+        "endpoint": "909afe67.201ff",
+        "item": "",
+        "datatype": "",
+        "topic": "",
+        "items": [],
+        "x": 510,
+        "y": 800,
+        "wires": [
+            [
+                "e339e83a.1366e8"
+            ]
+        ]
+    },
+    {
+        "id": "e339e83a.1366e8",
+        "type": "debug",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 710,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "77f710f7.a10c1",
+        "type": "inject",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 320,
+        "y": 800,
+        "wires": [
+            [
+                "ef427f5a.b1a85"
+            ]
+        ]
+    },
+    {
+        "id": "b476ac41.bbc73",
+        "type": "inject",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "ns=1;s=actuator.status;datatype=Boolean",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 320,
+        "y": 860,
+        "wires": [
+            [
+                "6b258151.dd929"
+            ]
+        ]
+    },
+    {
+        "id": "6b258151.dd929",
+        "type": "OpcUa-Client",
+        "z": "c0309404.4863b8",
+        "endpoint": "909afe67.201ff",
+        "action": "read",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": 10,
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "name": "",
+        "x": 500,
+        "y": 860,
+        "wires": [
+            [
+                "8e0dd8a3.2f2628"
+            ]
+        ]
+    },
+    {
+        "id": "8e0dd8a3.2f2628",
+        "type": "debug",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 710,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "44c6c744.991138",
+        "type": "OpcUa-Item",
+        "z": "c0309404.4863b8",
+        "item": "ns=1;s=actuator.status",
+        "datatype": "Boolean",
+        "value": "msg.payload",
+        "name": "",
+        "x": 500,
+        "y": 940,
+        "wires": [
+            [
+                "816fb11e.83914"
+            ]
+        ]
+    },
+    {
+        "id": "4aabf101.766b3",
+        "type": "inject",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 310,
+        "y": 920,
+        "wires": [
+            [
+                "44c6c744.991138"
+            ]
+        ]
+    },
+    {
+        "id": "816fb11e.83914",
+        "type": "OpcUa-Client",
+        "z": "c0309404.4863b8",
+        "endpoint": "909afe67.201ff",
+        "action": "write",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": 10,
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "name": "",
+        "x": 720,
+        "y": 940,
+        "wires": [
+            [
+                "53c32f30.ba52a"
+            ]
+        ]
+    },
+    {
+        "id": "53c32f30.ba52a",
+        "type": "debug",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 910,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "4d35433f.e6335c",
+        "type": "inject",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "",
+        "payload": "false",
+        "payloadType": "bool",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 310,
+        "y": 960,
+        "wires": [
+            [
+                "44c6c744.991138"
+            ]
+        ]
+    },
+    {
+        "id": "290e6c70.c70fa4",
+        "type": "comment",
+        "z": "c0309404.4863b8",
+        "name": "Inlet Valve",
+        "info": "",
+        "x": 300,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "4d0bba53.144264",
+        "type": "OpcUa-Browser",
+        "z": "c0309404.4863b8",
+        "endpoint": "61268e63.b8725",
+        "item": "",
+        "datatype": "",
+        "topic": "",
+        "items": [],
+        "x": 510,
+        "y": 1160,
+        "wires": [
+            [
+                "5de97074.7b3f4"
+            ]
+        ]
+    },
+    {
+        "id": "5de97074.7b3f4",
+        "type": "debug",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 710,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "65260eec.24734",
+        "type": "inject",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 320,
+        "y": 1160,
+        "wires": [
+            [
+                "4d0bba53.144264"
+            ]
+        ]
+    },
+    {
+        "id": "9c2c263.117e3d8",
+        "type": "inject",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "ns=1;s=actuator.status;datatype=Boolean",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 320,
+        "y": 1220,
+        "wires": [
+            [
+                "11a4b0fb.6eef4f"
+            ]
+        ]
+    },
+    {
+        "id": "11a4b0fb.6eef4f",
+        "type": "OpcUa-Client",
+        "z": "c0309404.4863b8",
+        "endpoint": "61268e63.b8725",
+        "action": "read",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": 10,
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "name": "",
+        "x": 500,
+        "y": 1220,
+        "wires": [
+            [
+                "fa4b29c4.6063a8"
+            ]
+        ]
+    },
+    {
+        "id": "fa4b29c4.6063a8",
+        "type": "debug",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 710,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "4fe02948.cfab48",
+        "type": "OpcUa-Item",
+        "z": "c0309404.4863b8",
+        "item": "ns=1;s=actuator.status",
+        "datatype": "Boolean",
+        "value": "msg.payload",
+        "name": "",
+        "x": 500,
+        "y": 1300,
+        "wires": [
+            [
+                "b7243baa.42d428"
+            ]
+        ]
+    },
+    {
+        "id": "2c38df33.fad21",
+        "type": "inject",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 310,
+        "y": 1280,
+        "wires": [
+            [
+                "4fe02948.cfab48"
+            ]
+        ]
+    },
+    {
+        "id": "b7243baa.42d428",
+        "type": "OpcUa-Client",
+        "z": "c0309404.4863b8",
+        "endpoint": "61268e63.b8725",
+        "action": "write",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": 10,
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "name": "",
+        "x": 720,
+        "y": 1300,
+        "wires": [
+            [
+                "33035951.0cdd76"
+            ]
+        ]
+    },
+    {
+        "id": "33035951.0cdd76",
+        "type": "debug",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 910,
+        "y": 1300,
+        "wires": []
+    },
+    {
+        "id": "9ed03e36.4f6d6",
+        "type": "inject",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "",
+        "payload": "false",
+        "payloadType": "bool",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 310,
+        "y": 1320,
+        "wires": [
+            [
+                "4fe02948.cfab48"
+            ]
+        ]
+    },
+    {
+        "id": "b9d1b228.4b355",
+        "type": "comment",
+        "z": "c0309404.4863b8",
+        "name": "Outlet Valve",
+        "info": "",
+        "x": 310,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "1e781873.d49768",
+        "type": "modbus-read",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "unitid": "",
+        "dataType": "Coil",
+        "adr": "0",
+        "quantity": "1",
+        "rate": "1",
+        "rateUnit": "s",
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "server": "8e46b900.6719b8",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "x": 329,
+        "y": 1014,
+        "wires": [
+            [
+                "85ec9cc8.21b06"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "85ec9cc8.21b06",
+        "type": "function",
+        "z": "c0309404.4863b8",
+        "name": "Parse Coil",
+        "func": "var status = msg.payload[4]\nmsg.payload = status;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 509,
+        "y": 1014,
+        "wires": [
+            [
+                "df58c143.04aee"
+            ]
+        ]
+    },
+    {
+        "id": "df58c143.04aee",
+        "type": "OpcUa-Item",
+        "z": "c0309404.4863b8",
+        "item": "ns=1;s=actuator.status",
+        "datatype": "Boolean",
+        "value": "msg.payload",
+        "name": "",
+        "x": 679,
+        "y": 1014,
+        "wires": [
+            [
+                "8708dfbb.f255c"
+            ]
+        ]
+    },
+    {
+        "id": "8708dfbb.f255c",
+        "type": "OpcUa-Client",
+        "z": "c0309404.4863b8",
+        "endpoint": "909afe67.201ff",
+        "action": "write",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": 10,
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "name": "",
+        "x": 859,
+        "y": 1014,
+        "wires": [
+            [
+                "90f1b991.b22508"
+            ]
+        ]
+    },
+    {
+        "id": "90f1b991.b22508",
+        "type": "debug",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1029,
+        "y": 1014,
+        "wires": []
+    },
+    {
+        "id": "38c6025f.46194e",
+        "type": "modbus-read",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "",
+        "showStatusActivities": false,
+        "logIOActivities": false,
+        "showErrors": false,
+        "unitid": "",
+        "dataType": "Coil",
+        "adr": "0",
+        "quantity": "1",
+        "rate": "1",
+        "rateUnit": "s",
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "server": "8e46b900.6719b8",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "x": 329,
+        "y": 1379,
+        "wires": [
+            [
+                "593cfde2.bce774"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "593cfde2.bce774",
+        "type": "function",
+        "z": "c0309404.4863b8",
+        "name": "Parse Coil",
+        "func": "var status = msg.payload[5]\nmsg.payload = status;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 509,
+        "y": 1379,
+        "wires": [
+            [
+                "3667b8b0.048838"
+            ]
+        ]
+    },
+    {
+        "id": "3667b8b0.048838",
+        "type": "OpcUa-Item",
+        "z": "c0309404.4863b8",
+        "item": "ns=1;s=actuator.status",
+        "datatype": "Boolean",
+        "value": "msg.payload",
+        "name": "",
+        "x": 679,
+        "y": 1379,
+        "wires": [
+            [
+                "d2ef1b7b.95e408"
+            ]
+        ]
+    },
+    {
+        "id": "d2ef1b7b.95e408",
+        "type": "OpcUa-Client",
+        "z": "c0309404.4863b8",
+        "endpoint": "61268e63.b8725",
+        "action": "write",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": 10,
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "name": "",
+        "x": 859,
+        "y": 1379,
+        "wires": [
+            [
+                "2654c586.91d37a"
+            ]
+        ]
+    },
+    {
+        "id": "2654c586.91d37a",
+        "type": "debug",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 1029,
+        "y": 1379,
+        "wires": []
+    },
+    {
+        "id": "70f6eb09.29a854",
+        "type": "mqtt in",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "level-high-switch",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "2ad0298c.3600d6",
+        "x": 320,
+        "y": 360,
+        "wires": [
+            [
+                "c402f325.7dead"
+            ]
+        ]
+    },
+    {
+        "id": "c402f325.7dead",
+        "type": "function",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "func": "var obj = JSON.parse(msg.payload);\nvar status = obj.Messages[0].Payload[\"Sensor Status\"].Body;\nmsg.payload = status;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 490,
+        "y": 360,
+        "wires": [
+            [
+                "c92a3cfb.f3d2f"
+            ]
+        ]
+    },
+    {
+        "id": "c92a3cfb.f3d2f",
+        "type": "modbus-write",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "unitid": "",
+        "dataType": "Coil",
+        "adr": "3",
+        "quantity": "1",
+        "server": "8e46b900.6719b8",
+        "x": 670,
+        "y": 360,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "5893d8ac.1d8fc8",
+        "type": "comment",
+        "z": "c0309404.4863b8",
+        "name": "LeveL High Switch",
+        "info": "",
+        "x": 330,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "b66fde4f.f675c",
+        "type": "mqtt in",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "level-low-switch",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "2ad0298c.3600d6",
+        "x": 320,
+        "y": 680,
+        "wires": [
+            [
+                "bd9fc4a7.09ca58"
+            ]
+        ]
+    },
+    {
+        "id": "bd9fc4a7.09ca58",
+        "type": "function",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "func": "var obj = JSON.parse(msg.payload);\nvar status = obj.Messages[0].Payload[\"Sensor Status\"].Body;\nmsg.payload = status;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 490,
+        "y": 680,
+        "wires": [
+            [
+                "fcf4afee.0c6cf"
+            ]
+        ]
+    },
+    {
+        "id": "fcf4afee.0c6cf",
+        "type": "modbus-write",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "unitid": "",
+        "dataType": "Coil",
+        "adr": "1",
+        "quantity": "1",
+        "server": "8e46b900.6719b8",
+        "x": 670,
+        "y": 680,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "f4a2ab6b.9f1ea8",
+        "type": "comment",
+        "z": "c0309404.4863b8",
+        "name": "LeveL Low Switch",
+        "info": "",
+        "x": 330,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "bd99a16b.e1aa5",
+        "type": "OpcUa-Browser",
+        "z": "c0309404.4863b8",
+        "endpoint": "529293ec.b60f1c",
+        "item": "",
+        "datatype": "",
+        "topic": "",
+        "items": [],
+        "x": 510,
+        "y": 460,
+        "wires": [
+            [
+                "f1be7771.18f508"
+            ]
+        ]
+    },
+    {
+        "id": "f1be7771.18f508",
+        "type": "debug",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 710,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "9c158ba0.c8e198",
+        "type": "inject",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 320,
+        "y": 460,
+        "wires": [
+            [
+                "bd99a16b.e1aa5"
+            ]
+        ]
+    },
+    {
+        "id": "9ce491e3.01d2f",
+        "type": "inject",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "ns=1;s=sensor.status;datatype=Boolean",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 320,
+        "y": 520,
+        "wires": [
+            [
+                "9389af27.5de0c"
+            ]
+        ]
+    },
+    {
+        "id": "9389af27.5de0c",
+        "type": "OpcUa-Client",
+        "z": "c0309404.4863b8",
+        "endpoint": "529293ec.b60f1c",
+        "action": "read",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": 10,
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "name": "",
+        "x": 500,
+        "y": 520,
+        "wires": [
+            [
+                "e97ef7cc.3e1e38"
+            ]
+        ]
+    },
+    {
+        "id": "e97ef7cc.3e1e38",
+        "type": "debug",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 710,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "641fea3e.6cff34",
+        "type": "OpcUa-Item",
+        "z": "c0309404.4863b8",
+        "item": "ns=1;s=sensor.status",
+        "datatype": "Boolean",
+        "value": "msg.payload",
+        "name": "",
+        "x": 500,
+        "y": 600,
+        "wires": [
+            [
+                "b39fcc1.75ea83"
+            ]
+        ]
+    },
+    {
+        "id": "f66b105.006dff",
+        "type": "inject",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 310,
+        "y": 580,
+        "wires": [
+            [
+                "641fea3e.6cff34"
+            ]
+        ]
+    },
+    {
+        "id": "b39fcc1.75ea83",
+        "type": "OpcUa-Client",
+        "z": "c0309404.4863b8",
+        "endpoint": "529293ec.b60f1c",
+        "action": "write",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": 10,
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "name": "",
+        "x": 720,
+        "y": 600,
+        "wires": [
+            [
+                "d7ab213.3e813e"
+            ]
+        ]
+    },
+    {
+        "id": "d7ab213.3e813e",
+        "type": "debug",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 910,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "7e10804.3caad8",
+        "type": "inject",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "",
+        "payload": "false",
+        "payloadType": "bool",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 310,
+        "y": 620,
+        "wires": [
+            [
+                "641fea3e.6cff34"
+            ]
+        ]
+    },
+    {
+        "id": "85457120.38571",
+        "type": "OpcUa-Browser",
+        "z": "c0309404.4863b8",
+        "endpoint": "1080b8d2.73fc47",
+        "item": "",
+        "datatype": "",
+        "topic": "",
+        "items": [],
+        "x": 510,
+        "y": 140,
+        "wires": [
+            [
+                "8afbc611.350128"
+            ]
+        ]
+    },
+    {
+        "id": "8afbc611.350128",
+        "type": "debug",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 710,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "559544b5.02533c",
+        "type": "inject",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 320,
+        "y": 140,
+        "wires": [
+            [
+                "85457120.38571"
+            ]
+        ]
+    },
+    {
+        "id": "d4f2ce17.63535",
+        "type": "inject",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "ns=1;s=sensor.status;datatype=Boolean",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 320,
+        "y": 200,
+        "wires": [
+            [
+                "6fb6cdde.325924"
+            ]
+        ]
+    },
+    {
+        "id": "6fb6cdde.325924",
+        "type": "OpcUa-Client",
+        "z": "c0309404.4863b8",
+        "endpoint": "1080b8d2.73fc47",
+        "action": "read",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": 10,
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "name": "",
+        "x": 500,
+        "y": 200,
+        "wires": [
+            [
+                "40c1bff7.cb014"
+            ]
+        ]
+    },
+    {
+        "id": "40c1bff7.cb014",
+        "type": "debug",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 710,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "bdd944a.4a05fb8",
+        "type": "OpcUa-Item",
+        "z": "c0309404.4863b8",
+        "item": "ns=1;s=sensor.status",
+        "datatype": "Boolean",
+        "value": "msg.payload",
+        "name": "",
+        "x": 500,
+        "y": 280,
+        "wires": [
+            [
+                "6487a015.4dbf4"
+            ]
+        ]
+    },
+    {
+        "id": "6503205c.d959b",
+        "type": "inject",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 310,
+        "y": 260,
+        "wires": [
+            [
+                "bdd944a.4a05fb8"
+            ]
+        ]
+    },
+    {
+        "id": "6487a015.4dbf4",
+        "type": "OpcUa-Client",
+        "z": "c0309404.4863b8",
+        "endpoint": "1080b8d2.73fc47",
+        "action": "write",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": 10,
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "name": "",
+        "x": 720,
+        "y": 280,
+        "wires": [
+            [
+                "b82a5d73.a5916"
+            ]
+        ]
+    },
+    {
+        "id": "b82a5d73.a5916",
+        "type": "debug",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 910,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "2a26e1ed.ecbefe",
+        "type": "inject",
+        "z": "c0309404.4863b8",
+        "name": "",
+        "topic": "",
+        "payload": "false",
+        "payloadType": "bool",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 310,
+        "y": 300,
+        "wires": [
+            [
+                "bdd944a.4a05fb8"
+            ]
+        ]
+    },
+    {
+        "id": "909afe67.201ff",
+        "type": "OpcUa-Endpoint",
+        "z": "",
+        "endpoint": "opc.tcp://inlet-valve:4801",
+        "secpol": "None",
+        "secmode": "NONE",
+        "login": false
+    },
+    {
+        "id": "61268e63.b8725",
+        "type": "OpcUa-Endpoint",
+        "z": "",
+        "endpoint": "opc.tcp://outlet-valve:4801",
+        "secpol": "None",
+        "secmode": "NONE",
+        "login": false
+    },
+    {
+        "id": "8e46b900.6719b8",
+        "type": "modbus-client",
+        "z": "",
+        "name": "openplc",
+        "clienttype": "tcp",
+        "bufferCommands": true,
+        "stateLogEnabled": false,
+        "queueLogEnabled": false,
+        "tcpHost": "openplc",
+        "tcpPort": "502",
+        "tcpType": "DEFAULT",
+        "serialPort": "/dev/ttyUSB",
+        "serialType": "RTU-BUFFERD",
+        "serialBaudrate": "9600",
+        "serialDatabits": "8",
+        "serialStopbits": "1",
+        "serialParity": "none",
+        "serialConnectionDelay": "100",
+        "unit_id": "1",
+        "commandDelay": "1",
+        "clientTimeout": "1000",
+        "reconnectOnTimeout": true,
+        "reconnectTimeout": "2000",
+        "parallelUnitIdsAllowed": true
+    },
+    {
+        "id": "2ad0298c.3600d6",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "",
+        "broker": "mosquitto",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "529293ec.b60f1c",
+        "type": "OpcUa-Endpoint",
+        "z": "",
+        "endpoint": "opc.tcp://level-low-switch:4840",
+        "secpol": "None",
+        "secmode": "NONE",
+        "login": false
+    },
+    {
+        "id": "1080b8d2.73fc47",
+        "type": "OpcUa-Endpoint",
+        "z": "",
+        "endpoint": "opc.tcp://level-high-switch:4840",
+        "secpol": "None",
+        "secmode": "NONE",
+        "login": false
+    }
+]
