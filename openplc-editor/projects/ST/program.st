@@ -2,7 +2,7 @@ PROGRAM program0
   VAR
     LevelLow AT %QX0.1 : BOOL;
     MasterCoil AT %QX0.2 : BOOL;
-    LeveLHigh AT %QX0.3 : BOOL;
+    LevelHigh AT %QX0.3 : BOOL;
     InletValve AT %QX0.4 : BOOL;
     OutletValve AT %QX0.5 : BOOL;
     Start AT %QX0.6 : BOOL;

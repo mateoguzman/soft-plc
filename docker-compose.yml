@@ -47,6 +47,30 @@ services:
       - mosquitto
     environment:
       - DEBUG=contribModbus*
+  
+  level-high-switch:
+    build:
+      context: opcua
+      dockerfile: Dockerfile
+      args:
+        http_proxy: "${http_proxy:-}"
+        https_proxy: "${https_proxy:-}"
+    image: level-high-switch
+    command: "/root/examples/tutorial_pubsub_mqtt_publish --url opc.mqtt://mosquitto:1883 --topic level-high-switch --freq 5000 --json --id level-high-switch"
+    depends_on:
+      - mosquitto
+
+  level-low-switch:
+    build:
+      context: opcua
+      dockerfile: Dockerfile
+      args:
+        http_proxy: "${http_proxy:-}"
+        https_proxy: "${https_proxy:-}"
+    image: level-low-switch
+    command: "/root/examples/tutorial_pubsub_mqtt_publish --url opc.mqtt://mosquitto:1883 --topic level-low-switch --freq 5000 --json --id level-low-switch"
+    depends_on:
+      - mosquitto
 
 volumes:
   mosquitto-data:

@@ -45,9 +45,31 @@ static UA_Boolean useJson = false;
 static UA_NodeId connectionIdent;
 static UA_NodeId publishedDataSetIdent;
 static UA_NodeId writerGroupIdent;
+static UA_NodeId sensorStatusId;
 
 static void
-addPubSubConnection(UA_Server *server, char *addressUrl) {
+addVariable(UA_Server *server) {
+    /* Define the attribute of the sensorStatus variable node */
+    UA_VariableAttributes attr = UA_VariableAttributes_default;
+    UA_Boolean sensorStatus = 0;
+    UA_Variant_setScalar(&attr.value, &sensorStatus, &UA_TYPES[UA_TYPES_BOOLEAN]);
+    attr.description = UA_LOCALIZEDTEXT("en-US","Sensor Status");
+    attr.displayName = UA_LOCALIZEDTEXT("en-US","Sensor Status");
+    attr.dataType = UA_TYPES[UA_TYPES_BOOLEAN].typeId;
+    attr.accessLevel = UA_ACCESSLEVELMASK_READ | UA_ACCESSLEVELMASK_WRITE;
+
+    /* Add the variable node to the information model */
+    sensorStatusId = UA_NODEID_STRING(1, "sensor.status");
+    UA_QualifiedName sensorStatusName = UA_QUALIFIEDNAME(1, "Sensor Status");
+    UA_NodeId parentNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_OBJECTSFOLDER);
+    UA_NodeId parentReferenceNodeId = UA_NODEID_NUMERIC(0, UA_NS0ID_ORGANIZES);
+    UA_Server_addVariableNode(server, sensorStatusId, parentNodeId,
+                              parentReferenceNodeId, sensorStatusName,
+                              UA_NODEID_NUMERIC(0, UA_NS0ID_BASEDATAVARIABLETYPE), attr, NULL, NULL);
+}
+
+static void
+addPubSubConnection(UA_Server *server, char *addressUrl, char* id) {
     /* Details about the connection configuration and handling are located
      * in the pubsub connection tutorial */
     UA_PubSubConnectionConfig connectionConfig;
@@ -67,7 +89,7 @@ addPubSubConnection(UA_Server *server, char *addressUrl) {
     /* configure options, set mqtt client id */
     UA_KeyValuePair connectionOptions[1];
     connectionOptions[0].key = UA_QUALIFIEDNAME(0, CONNECTIONOPTION_NAME);
-    UA_String mqttClientId = UA_STRING(MQTT_CLIENT_ID);
+    UA_String mqttClientId = UA_STRING(id);
     UA_Variant_setScalar(&connectionOptions[0].value, &mqttClientId, &UA_TYPES[UA_TYPES_STRING]);
     connectionConfig.connectionProperties = connectionOptions;
     connectionConfig.connectionPropertiesSize = 1;
@@ -104,13 +126,23 @@ addDataSetField(UA_Server *server) {
     memset(&dataSetFieldConfig, 0, sizeof(UA_DataSetFieldConfig));
     dataSetFieldConfig.dataSetFieldType = UA_PUBSUB_DATASETFIELD_VARIABLE;
 
-    dataSetFieldConfig.field.variable.fieldNameAlias = UA_STRING("Server localtime");
+    dataSetFieldConfig.field.variable.fieldNameAlias = UA_STRING("Server Localtime");
     dataSetFieldConfig.field.variable.promotedField = UA_FALSE;
     dataSetFieldConfig.field.variable.publishParameters.publishedVariable =
     UA_NODEID_NUMERIC(0, UA_NS0ID_SERVER_SERVERSTATUS_CURRENTTIME);
     dataSetFieldConfig.field.variable.publishParameters.attributeId = UA_ATTRIBUTEID_VALUE;
     UA_Server_addDataSetField(server, publishedDataSetIdent, &dataSetFieldConfig, NULL);
 
+    /* Add a field to the previous created PublishedDataSet */
+    UA_DataSetFieldConfig dataSetFieldConfig1;
+    memset(&dataSetFieldConfig1, 0, sizeof(UA_DataSetFieldConfig));
+    dataSetFieldConfig1.dataSetFieldType = UA_PUBSUB_DATASETFIELD_VARIABLE;
+
+    dataSetFieldConfig1.field.variable.fieldNameAlias = UA_STRING("Sensor Status");
+    dataSetFieldConfig1.field.variable.promotedField = UA_FALSE;
+    dataSetFieldConfig1.field.variable.publishParameters.publishedVariable = sensorStatusId;
+    dataSetFieldConfig1.field.variable.publishParameters.attributeId = UA_ATTRIBUTEID_VALUE;
+    UA_Server_addDataSetField(server, publishedDataSetIdent, &dataSetFieldConfig1, NULL);
 }
 
 /**
@@ -307,11 +339,13 @@ static void usage(void) {
     printf("Usage: tutorial_pubsub_mqtt [--url <opc.mqtt://hostname:port>] "
            "[--topic <mqttTopic>] "
            "[--freq <frequency in ms> "
+           "[--id <mqtt client id>] "
            "[--json]\n"
            "  Defaults are:\n"
            "  - Url: opc.mqtt://127.0.0.1:1883\n"
            "  - Topic: customTopic\n"
            "  - Frequency: 500\n"
+           "  - MQTT Client Id: TESTCLIENTPUBSUBMQTT\n"
            "  - JSON: Off\n");
 }
 
@@ -323,6 +357,7 @@ int main(int argc, char **argv) {
     char *addressUrl = BROKER_ADDRESS_URL;
     char *topic = PUBLISHER_TOPIC;
     int interval = PUBLISH_INTERVAL;
+    char *id = MQTT_CLIENT_ID;
 
     /* Parse arguments */
     for(int argpos = 1; argpos < argc; argpos++) {
@@ -353,6 +388,16 @@ int main(int argc, char **argv) {
             }
             argpos++;
             topic = argv[argpos];
+            continue;
+        }
+
+        if(strcmp(argv[argpos], "--id") == 0) {
+            if(argpos + 1 == argc) {
+                usage();
+                return -1;
+            }
+            argpos++;
+            id = argv[argpos];
             continue;
         }
 
@@ -393,7 +438,8 @@ int main(int argc, char **argv) {
     config->pubsubTransportLayers[0] = UA_PubSubTransportLayerMQTT();
     config->pubsubTransportLayersSize++;
 
-    addPubSubConnection(server, addressUrl);
+    addVariable(server);
+    addPubSubConnection(server, addressUrl, id);
     addPublishedDataSet(server);
     addDataSetField(server);
     retval = addWriterGroup(server, topic, interval);
