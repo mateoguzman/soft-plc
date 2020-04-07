@@ -55,7 +55,7 @@ services:
       args:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
-    image: level-high-switch
+    image: opcua
     command: "/root/examples/tutorial_pubsub_mqtt_publish --url opc.mqtt://mosquitto:1883 --topic level-high-switch --freq 5000 --json --id level-high-switch"
     depends_on:
       - mosquitto
@@ -67,7 +67,7 @@ services:
       args:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
-    image: level-low-switch
+    image: opcua
     command: "/root/examples/tutorial_pubsub_mqtt_publish --url opc.mqtt://mosquitto:1883 --topic level-low-switch --freq 5000 --json --id level-low-switch"
     depends_on:
       - mosquitto
@@ -79,7 +79,7 @@ services:
       args:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
-    image: inlet-valve
+    image: opcua
     command: "/root/examples/tutorial_pubsub_mqtt_subscribe --url opc.mqtt://mosquitto:1883 --topic inlet-valve --id inlet-valve"
     depends_on:
       - mosquitto
@@ -91,7 +91,7 @@ services:
       args:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
-    image: inlet-valve
+    image: opcua
     command: "/root/examples/tutorial_pubsub_mqtt_subscribe --url opc.mqtt://mosquitto:1883 --topic outlet-valve --id outlet-valve"
     depends_on:
       - mosquitto
