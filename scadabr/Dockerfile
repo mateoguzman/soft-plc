@@ -6,4 +6,12 @@ RUN git clone https://github.com/thiagoralves/ScadaBR_Installer.git && \
     cd ScadaBR_Installer && \
     ./install_scadabr.sh
 
+RUN useradd -ms /bin/bash scadabr
+
+RUN chown scadabr /opt/tomcat6/apache-tomcat-6.0.53/ -R
+
+USER scadabr
+
+WORKDIR /opt/tomcat6/apache-tomcat-6.0.53/work
+
 CMD ["/opt/tomcat6/apache-tomcat-6.0.53/bin/catalina.sh", "run"]

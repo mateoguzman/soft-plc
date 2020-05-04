@@ -5,6 +5,7 @@ volumes:
   mosquitto-log:
   mosquitto-config:
   openplc-webserver:
+  scadabr-bin:
   scadabr-work:
   scadabr-conf:
   scadabr-logs:
@@ -80,9 +81,10 @@ services:
     security_opt:
       - label=level:s0:c1,c2
       - no-new-privileges
-    read_only: false
+    read_only: true
     restart: on-failure:5
     volumes:
+      - scadabr-bin:/opt/tomcat6/apache-tomcat-6.0.53/bin/
       - scadabr-work:/opt/tomcat6/apache-tomcat-6.0.53/work/
       - scadabr-conf:/opt/tomcat6/apache-tomcat-6.0.53/conf/
       - scadabr-logs:/opt/tomcat6/apache-tomcat-6.0.53/logs/
