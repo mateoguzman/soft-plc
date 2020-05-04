@@ -1160,7 +1160,7 @@
         "stateLogEnabled": false,
         "queueLogEnabled": false,
         "tcpHost": "openplc",
-        "tcpPort": "502",
+        "tcpPort": "12345",
         "tcpType": "DEFAULT",
         "serialPort": "/dev/ttyUSB",
         "serialType": "RTU-BUFFERD",

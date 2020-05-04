@@ -57,7 +57,7 @@ services:
     read_only: true
     restart: on-failure:5
     volumes:
-      - openplc-webserver:/OpenPLC_v3/webserver/
+      - openplc-webserver:/home/openplc/OpenPLC_v3/
     tmpfs:
       - /tmp
     networks:

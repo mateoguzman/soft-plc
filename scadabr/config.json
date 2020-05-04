@@ -134,7 +134,7 @@
          "maxReadRegisterCount":125,
          "maxWriteRegisterCount":120,
          "name":"openplc",
-         "port":502,
+         "port":12345,
          "quantize":false,
          "retries":2,
          "timeout":1500,
