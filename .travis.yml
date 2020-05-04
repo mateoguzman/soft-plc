@@ -3,6 +3,8 @@ services:
 
 env:
   - DOCKER_COMPOSE_VERSION=1.24.1
+  - HOST_IP='0.0.0.0'
+  - DOCKER_REGISTRY=''
 
 before_install:
   - sudo rm /usr/local/bin/docker-compose
