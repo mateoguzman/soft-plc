@@ -1,14 +1,42 @@
 version: '3.4'
+
+volumes:
+  mosquitto-data:
+  mosquitto-log:
+  openplc-webserver:
+  scadabr-work:
+  scadabr-conf:
+  scadabr-logs:
+  scadabr-webapps:
+  node-red-data:
+
+networks:
+  softplc-network:
+    driver: "bridge"
+
 services:
   mosquitto:
-    image: eclipse-mosquitto
-    volumes:
-      - ./mosquitto/config:/mosquitto/config
-      - mosquitto-data:/mosquitto/data
-      - mosquitto-log:/mosquitto/logs
+    build:
+      context: mosquitto
+      dockerfile: Dockerfile
+      args:
+        http_proxy: "${http_proxy:-}"
+        https_proxy: "${https_proxy:-}"
+    image: ${DOCKER_REGISTRY}mosquitto
+    container_name: softplc-mosquitto
     ports:
-      - "1883:1883"
-      - "9001:9001"
+      - "${HOST_IP}:1883:1883"
+      - "${HOST_IP}:9001:9001"
+    security_opt:
+      - label=level:s0:c1,c2
+      - no-new-privileges
+    read_only: true
+    restart: on-failure:5
+    volumes:
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-log:/mosquitto/log
+    networks:
+      - softplc-network
  
   openplc:
     build:
@@ -17,10 +45,24 @@ services:
       args:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
-    image: openplc
+    image: ${DOCKER_REGISTRY}openplc
+    container_name: softplc-openplc
     ports:
-      - "8080:8080"
-    privileged: true
+      - "${HOST_IP}:8080:8080"
+    security_opt:
+      - label=level:s0:c1,c2
+      - no-new-privileges
+    read_only: true
+    restart: on-failure:5
+    volumes:
+      - openplc-webserver:/OpenPLC_v3/webserver/
+    tmpfs:
+      - /tmp
+    networks:
+      - softplc-network
+    cap_add:
+      - "SYS_NICE"
+      - "IPC_LOCK"
 
   scadabr:
     build:
@@ -29,9 +71,25 @@ services:
       args:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
-    image: scadabr
+    image: ${DOCKER_REGISTRY}scadabr
+    container_name: softplc-scadabr
     ports:
-      - "9090:9090"
+      - "${HOST_IP}:9090:9090"
+    security_opt:
+      - label=level:s0:c1,c2
+      - no-new-privileges
+    read_only: false
+    restart: on-failure:5
+    volumes:
+      - scadabr-work:/opt/tomcat6/apache-tomcat-6.0.53/work/
+      - scadabr-conf:/opt/tomcat6/apache-tomcat-6.0.53/conf/
+      - scadabr-logs:/opt/tomcat6/apache-tomcat-6.0.53/logs/
+      - scadabr-webapps:/opt/tomcat6/apache-tomcat-6.0.53/webapps/
+    tmpfs:
+      - /home
+      - /tmp
+    networks:
+      - softplc-network
 
   node-red:
     build:
@@ -40,13 +98,39 @@ services:
       args:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
-    image: node-red
+    image: ${DOCKER_REGISTRY}node-red
+    container_name: softplc-node-red
     ports:
-      - "1880:1880"
+      - "${HOST_IP}:1880:1880"
     depends_on:
       - mosquitto
-    environment:
-      - DEBUG=contribModbus*
+    security_opt:
+      - label=level:s0:c1,c2
+      - no-new-privileges
+    read_only: true
+    restart: on-failure:5
+    volumes:
+      - node-red-data:/data
+    networks:
+      - softplc-network
+  
+  opcua-dev:
+    build:
+      context: opcua
+      dockerfile: Dockerfile
+      args:
+        http_proxy: "${http_proxy:-}"
+        https_proxy: "${https_proxy:-}"
+      target: opcua-dev
+    image: ${DOCKER_REGISTRY}opcua-dev
+    container_name: opcua-dev
+    command: "/bin/sh"
+    security_opt:
+      - label=level:s0:c1,c2
+      - no-new-privileges
+    read_only: false
+    networks:
+      - softplc-network
   
   level-high-switch:
     build:
@@ -55,10 +139,19 @@ services:
       args:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
-    image: opcua
-    command: "/root/examples/tutorial_pubsub_mqtt_publish --url opc.mqtt://mosquitto:1883 --topic level-high-switch --freq 5000 --json --id level-high-switch"
+      target: opcua-mqtt-publish
+    image: ${DOCKER_REGISTRY}level-high-switch
+    container_name: softplc-level-high-switch
+    command: "--url opc.mqtt://mosquitto:1883 --topic level-high-switch --freq 5000 --json --id level-high-switch"
     depends_on:
       - mosquitto
+    security_opt:
+      - label=level:s0:c1,c2
+      - no-new-privileges
+    read_only: true
+    restart: on-failure:5
+    networks:
+      - softplc-network
 
   level-low-switch:
     build:
@@ -67,10 +160,19 @@ services:
       args:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
-    image: opcua
-    command: "/root/examples/tutorial_pubsub_mqtt_publish --url opc.mqtt://mosquitto:1883 --topic level-low-switch --freq 5000 --json --id level-low-switch"
+      target:  opcua-mqtt-publish
+    image: ${DOCKER_REGISTRY}level-low-switch
+    container_name: softplc-level-low-switch
+    command: "--url opc.mqtt://mosquitto:1883 --topic level-low-switch --freq 5000 --json --id level-low-switch"
     depends_on:
       - mosquitto
+    security_opt:
+      - label=level:s0:c1,c2
+      - no-new-privileges
+    read_only: true
+    restart: on-failure:5
+    networks:
+      - softplc-network
 
   inlet-valve:
     build:
@@ -79,10 +181,18 @@ services:
       args:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
-    image: opcua
-    command: "/root/examples/tutorial_pubsub_mqtt_subscribe --url opc.mqtt://mosquitto:1883 --topic inlet-valve --id inlet-valve"
+    image: ${DOCKER_REGISTRY}opcua
+    container_name: softplc-inlet-valve
+    command: "--url opc.mqtt://mosquitto:1883 --topic inlet-valve --id inlet-valve"
     depends_on:
       - mosquitto
+    security_opt:
+      - label=level:s0:c1,c2
+      - no-new-privileges
+    read_only: true
+    restart: on-failure:5
+    networks:
+      - softplc-network
 
   outlet-valve:
     build:
@@ -91,11 +201,15 @@ services:
       args:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
-    image: opcua
-    command: "/root/examples/tutorial_pubsub_mqtt_subscribe --url opc.mqtt://mosquitto:1883 --topic outlet-valve --id outlet-valve"
+    image: ${DOCKER_REGISTRY}opcua
+    container_name: softplc-outlet-valve
+    command: "--url opc.mqtt://mosquitto:1883 --topic outlet-valve --id outlet-valve"
     depends_on:
       - mosquitto
-
-volumes:
-  mosquitto-data:
-  mosquitto-log:
+    security_opt:
+      - label=level:s0:c1,c2
+      - no-new-privileges
+    read_only: true
+    restart: on-failure:5
+    networks:
+      - softplc-network

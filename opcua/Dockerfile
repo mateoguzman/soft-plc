@@ -1,4 +1,4 @@
-FROM alpine:3.10
+FROM alpine:3.10 as opcua-dev
 
 RUN apk add --no-cache cmake gcc git g++ musl-dev mbedtls-dev python py-pip make && rm -rf /var/cache/apk/*
 
@@ -37,3 +37,37 @@ COPY ./examples /root/examples
 RUN cd /root/examples && make all
 
 CMD sh
+
+FROM alpine:3.10 as opcua-mqtt-publish
+
+RUN addgroup -S opcua && adduser -S -G opcua opcua
+
+COPY --from=opcua-dev --chown=opcua \
+    /lib/ld-musl-x86_64.so.1 \
+    /usr/lib/libmbedx509.so.0 \
+    /usr/lib/libmbedcrypto.so.3 \
+    /usr/lib/libgcc_s.so.1 \
+    /usr/lib/
+
+COPY --from=opcua-dev --chown=opcua \
+    /root/examples/tutorial_pubsub_mqtt_publish \
+    /home/opcua/examples/tutorial_pubsub_mqtt_publish
+
+ENTRYPOINT [ "/home/opcua/examples/tutorial_pubsub_mqtt_publish" ]
+
+FROM alpine:3.10 as opcua-mqtt-subscribe
+
+RUN addgroup -S opcua && adduser -S -G opcua opcua
+
+COPY --from=opcua-dev --chown=opcua \
+    /lib/ld-musl-x86_64.so.1 \
+    /usr/lib/libmbedx509.so.0 \
+    /usr/lib/libmbedcrypto.so.3 \
+    /usr/lib/libgcc_s.so.1 \
+    /usr/lib/
+
+COPY --from=opcua-dev --chown=opcua \
+    /root/examples/tutorial_pubsub_mqtt_subscribe \
+    /home/opcua/examples/tutorial_pubsub_mqtt_subscribe
+
+ENTRYPOINT [ "/home/opcua/examples/tutorial_pubsub_mqtt_subscribe" ]
