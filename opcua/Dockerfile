@@ -53,6 +53,8 @@ COPY --from=opcua-dev --chown=opcua \
     /root/examples/tutorial_pubsub_mqtt_publish \
     /home/opcua/examples/tutorial_pubsub_mqtt_publish
 
+USER opcua
+
 ENTRYPOINT [ "/home/opcua/examples/tutorial_pubsub_mqtt_publish" ]
 
 FROM alpine:3.10 as opcua-mqtt-subscribe
@@ -69,5 +71,7 @@ COPY --from=opcua-dev --chown=opcua \
 COPY --from=opcua-dev --chown=opcua \
     /root/examples/tutorial_pubsub_mqtt_subscribe \
     /home/opcua/examples/tutorial_pubsub_mqtt_subscribe
+
+USER opcua
 
 ENTRYPOINT [ "/home/opcua/examples/tutorial_pubsub_mqtt_subscribe" ]

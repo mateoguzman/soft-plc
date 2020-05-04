@@ -3,6 +3,7 @@ version: '3.4'
 volumes:
   mosquitto-data:
   mosquitto-log:
+  mosquitto-config:
   openplc-webserver:
   scadabr-work:
   scadabr-conf:
@@ -35,6 +36,7 @@ services:
     volumes:
       - mosquitto-data:/mosquitto/data
       - mosquitto-log:/mosquitto/log
+      - mosquitto-config:/mosquitto/config
     networks:
       - softplc-network
  
@@ -181,7 +183,7 @@ services:
       args:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
-    image: ${DOCKER_REGISTRY}opcua
+    image: ${DOCKER_REGISTRY}inlet-valve
     container_name: softplc-inlet-valve
     command: "--url opc.mqtt://mosquitto:1883 --topic inlet-valve --id inlet-valve"
     depends_on:
@@ -201,7 +203,7 @@ services:
       args:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
-    image: ${DOCKER_REGISTRY}opcua
+    image: ${DOCKER_REGISTRY}outlet-valve
     container_name: softplc-outlet-valve
     command: "--url opc.mqtt://mosquitto:1883 --topic outlet-valve --id outlet-valve"
     depends_on:
