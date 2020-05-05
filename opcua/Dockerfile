@@ -12,7 +12,7 @@ RUN git clone https://github.com/open62541/open62541.git && \
     git checkout Standalone_mqtt_subscriber && \
     git config user.name "Your Name" && \
     git config user.email "you@example.com" && \
-    git merge master && \
+    git merge c35de3c548aeaa803f4f9c80b5a92823daab49b8 && \
     git submodule update --init --recursive
 
 WORKDIR /opt/open62541/build
