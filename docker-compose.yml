@@ -43,8 +43,8 @@ services:
  
   openplc:
     build:
-      context: .
-      dockerfile: openplc/Dockerfile
+      context: openplc
+      dockerfile: Dockerfile
       args:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"
@@ -69,8 +69,8 @@ services:
 
   scadabr:
     build:
-      context: .
-      dockerfile: scadabr/Dockerfile
+      context: scadabr
+      dockerfile: Dockerfile
       args:
         http_proxy: "${http_proxy:-}"
         https_proxy: "${https_proxy:-}"

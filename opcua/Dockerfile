@@ -53,6 +53,13 @@ COPY --from=opcua-dev --chown=opcua \
     /root/examples/tutorial_pubsub_mqtt_publish \
     /home/opcua/examples/tutorial_pubsub_mqtt_publish
 
+COPY --from=opcua-dev --chown=opcua \
+    /opt/open62541/build/bin/examples/client_connect \
+    /home/opcua/examples/client_connect
+
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD /home/opcua/examples/client_connect opc.tcp://127.0.0.1:4840/ || exit 1
+
 USER opcua
 
 ENTRYPOINT [ "/home/opcua/examples/tutorial_pubsub_mqtt_publish" ]
@@ -71,6 +78,13 @@ COPY --from=opcua-dev --chown=opcua \
 COPY --from=opcua-dev --chown=opcua \
     /root/examples/tutorial_pubsub_mqtt_subscribe \
     /home/opcua/examples/tutorial_pubsub_mqtt_subscribe
+
+COPY --from=opcua-dev --chown=opcua \
+    /opt/open62541/build/bin/examples/client_connect \
+    /home/opcua/examples/client_connect
+
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD /home/opcua/examples/client_connect opc.tcp://127.0.0.1:4801/ || exit 1
 
 USER opcua
 
