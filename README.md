@@ -38,5 +38,5 @@ docker update --cpu-shares 1024 --memory 50m  --memory-swap 50m  --pids-limit 10
 docker update --cpu-shares 1024 --memory 50m  --memory-swap 50m  --pids-limit 1024 softplc-level-low-switch
 docker update --cpu-shares 1024 --memory 100m --memory-swap 100m --pids-limit 1024 softplc-openplc
 docker update --cpu-shares 1024 --memory 50m  --memory-swap 50m  --pids-limit 1024 softplc-mosquitto
-docker update --cpu-shares 1024 --memory 500m --memory-swap 500m --pids-limit 1024 softplc-scadabr
+docker update --cpu-shares 1024 --memory 700m --memory-swap 700m --pids-limit 1024 softplc-scadabr
 ```
