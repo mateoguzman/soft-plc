@@ -2,6 +2,8 @@ FROM ubuntu:18.04
 
 RUN apt update && apt install -y git 
 
+RUN ln -s /usr/bin/python2.7 /usr/bin/python2
+
 RUN useradd -ms /bin/bash openplc
 
 WORKDIR /home/openplc
